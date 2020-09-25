@@ -1,5 +1,3 @@
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production'
-    ? '/youtube-api-with-vue3/'
-    : '/'
+  publicPath: process.env.NODE_ENV === 'production' ? './' : '/'
 }
