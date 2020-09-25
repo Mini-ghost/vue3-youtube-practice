@@ -18,7 +18,11 @@ function createObserve (
 
   return new IntersectionObserver!(
     entries => { entries.forEach(handler) },
-    { threshold: 1 }
+    {
+      // 修正當 threshold 設定為 1 時再 chrome 上的怪異行為
+      // 當設定為 1 的時候，在某些狀況 IntersectionObserver 除了
+      threshold: 0.99
+    }
   )
 }
 
@@ -29,7 +33,7 @@ function getObserver (): IntersectionObserver | undefined {
   }
 
 
-  return (cachedObserver = createObserve(({ target, intersectionRatio  }) => {
+  return (cachedObserver = createObserve(({ target, intersectionRatio }) => {
     if(!listeners.has(target)) {
       return
     }
