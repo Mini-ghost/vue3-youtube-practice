@@ -27,11 +27,14 @@ const listeners = new Map<Element, () => void>()
 function createObserver (
   handler: (entry: IntersectionObserverEntry) => void
 ) {
-  return new IntersectionObserver!((enterys) => {
-    enterys.forEach(handler)
-  }, {
-    threshold: 1,
-  })
+  return new IntersectionObserver!(
+    entrys => {
+      entrys.forEach(handler)
+    },
+    {
+      rootMargin: '200px'
+    }
+  )
 }
 
 function getObserver () {
@@ -86,7 +89,7 @@ export default defineComponent({
     const store = useStore()
     const videos = computed(() => store.state.videos)
 
-    const currentPage = ref(1)
+    const currentPage = ref(0)
     const canLoad = computed(() => currentPage.value < limit)
 
     const nextPageToken = computed(() => {
@@ -119,7 +122,10 @@ export default defineComponent({
       onBeforeUnmount(unlisten)
     }
 
-    onMounted(() => { initInfinityScroll() })
+    onMounted(async () => {
+      await loadVideos()
+      initInfinityScroll()
+    })
 
     return {
       observerDOM,
