@@ -3,45 +3,43 @@
     v-if="video"
     class="w-full max-w-screen-xl relative mx-auto px-6"
   >
-    <template v-if="id">
-      <div class="relative w-full pb-16:9 rounded-lg overflow-hidden border-green-600 border-2">
-        <video-player
-          class="absolute w-full h-full"
-          :video-id="id"
-        />
+    <div class="relative w-full pb-16:9 rounded-lg overflow-hidden border-green-600 border-2">
+      <video-player
+        class="absolute w-full h-full top-0 left-0"
+        :video-id="id"
+      />
+    </div>
+    <div class="my-4">
+      <video-favorite
+        class="float-right rounded-full hover:opacity-100 duration-100 outline-none ml-4"
+        :video="video"
+      />
+      <div class="my-6">
+        <h1 class="text-xl font-bold">
+          <a
+            class="hover:text-green-600 duration-300"
+            target="_blank"
+            rel="noopener"
+            :href="`https://www.youtube.com/watch?v=${video.id}`"
+          >
+            {{ video.title }}
+          </a>
+        </h1>
+        <p class="font-bold text-sm">
+          {{ video.channelTitle }}
+        </p>
       </div>
-      <div class="my-4">
-        <video-favorite
-          class="float-right rounded-full hover:opacity-100 duration-100 outline-none ml-4"
-          :video="video"
-        />
-        <div class="my-6">
-          <h1 class="text-xl font-bold">
-            <a
-              class="hover:text-green-600 duration-300"
-              target="_blank"
-              rel="noopener"
-              :href="`https://www.youtube.com/watch?v=${video.id}`"
-            >
-              {{ video.title }}
-            </a>
-          </h1>
-          <p class="font-bold text-sm">
-            {{ video.channelTitle }}
-          </p>
-        </div>
 
-        <div class="border-green-600 rounded-lg bg-green-100 bg-opacity-50 border-2 pb-6">
-          <div class="inline-block font-bold text-xs text-white px-4 py-2 bg-green-600 rounded-br-lg uppercase select-none">
-            description
-          </div>
-          <div
-            class="text-sm p-6 whitespace-pre-wrap break-all"
-            v-html="description"
-          />
+      <div class="border-green-600 rounded-lg bg-green-100 bg-opacity-50 border-2 pb-6">
+        <div class="inline-block font-bold text-xs text-white px-4 py-2 bg-green-600 rounded-br-lg uppercase select-none">
+          description
         </div>
+        <div
+          class="text-sm p-6 whitespace-pre-wrap break-all"
+          v-html="description"
+        />
       </div>
-    </template>
+    </div>
   </div>
 </template>
 
