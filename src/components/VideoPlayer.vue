@@ -3,8 +3,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch, nextTick, onBeforeUnmount } from 'vue'
-
+import {
+  defineComponent,
+  ref,
+  computed,
+  watch,
+  onMounted,
+  onBeforeUnmount
+} from 'vue'
 import youtube from 'youtube-player'
 
 const STATE_MAP = {
@@ -26,21 +32,23 @@ export default defineComponent({
   },
   emits: [...Object.values(STATE_MAP)],
   setup (props, { emit }) {
-    let player!: ReturnType<typeof youtube>
+    let player: ReturnType<typeof youtube> | undefined
     const root = ref<HTMLDivElement>()
 
     const unwatch = watch(computed(() => props.videoId), (videoId) => {
-      if(player) {
-        player.destroy()
+      if (player) {
+        // loadVideoById 用於 載入後自動撥放
+        player.cueVideoById(videoId)
+        return
       }
-      nextTick(() => {
+
+      onMounted(() => {
         player = youtube(root.value!, { videoId })
         player.on('stateChange', (e) => {
           const state = STATE_MAP[`${e.data}` as keyof typeof STATE_MAP]
           emit(state, e)
         })
       })
-
     }, {
       immediate: true
     })
@@ -49,7 +57,12 @@ export default defineComponent({
     // 銷毀播放器
     onBeforeUnmount(() => {
       unwatch()
-      player.destroy()
+      if (
+        player &&
+        typeof player.destroy === 'function'
+      ) {
+        player.destroy()
+      }
     })
 
     return {
