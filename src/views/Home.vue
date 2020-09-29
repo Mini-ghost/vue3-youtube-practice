@@ -81,6 +81,7 @@ export default defineComponent({
     VideoList
   },
   setup () {
+    let unlisten: () => void = () => {}
     const limit = 10 // 最多自動載入 10 次
     const observerDOM = ref<HTMLDivElement>()
     const store = useStore()
@@ -103,7 +104,6 @@ export default defineComponent({
     }
 
     const initInfinityScroll = () => {
-      let unlisten!: () => void
       const el = observerDOM.value!
 
       const observeCallback = async () => {
@@ -116,10 +116,13 @@ export default defineComponent({
       }
 
       unlisten = listenToIntersections(el, observeCallback)
-      onBeforeUnmount(unlisten)
     }
 
     onMounted(() => { initInfinityScroll() })
+
+    // These  lifecycle hook registration functions can only be used synchronously during setup()
+    // https://v3.vuejs.org/api/composition-api.html#lifecycle-hooks
+    onBeforeUnmount(unlisten)
 
     return {
       observerDOM,
