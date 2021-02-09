@@ -54,7 +54,7 @@ import VideoPlayer from '@/components/VideoPlayer.vue'
 import VideoFavorite from '@/components/VideoFavorite.vue'
 
 // TODO: 強化 REGEX_HASHTAG 細節
-const REGEX_HASHTAG = /#\S*/g
+const REGEX_HASHTAG = /(?<!\S)#(\w|[\u3400-\uFFFD])+/g
 const REGEX_LINK = /(http|https):\/\/([\w.]+\/?)\S*/g
 
 function pipe<T> (...fns: ((val: T) => T)[]) {
