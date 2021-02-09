@@ -4,7 +4,7 @@
       <router-link :to="to">
         <video-thumbnal
           class="pb-16:9 bg-center bg-cover"
-          :url="video.thumbnail"
+          :url="video.thumbnail.high.url"
         />
       </router-link>
       <video-favorite

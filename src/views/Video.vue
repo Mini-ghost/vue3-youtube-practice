@@ -7,6 +7,8 @@
       <video-player
         class="absolute w-full h-full top-0 left-0"
         :video-id="id"
+        @paused="onPaused"
+        @playing="onPlaying"
       />
     </div>
     <div class="my-4">
@@ -40,13 +42,34 @@
         />
       </div>
     </div>
+
+    <vue-final-modal
+      v-model="isAdShow"
+      content-class="w-11/12 max-w-6xl mx-auto mt-16"
+      name="ad"
+    >
+      <img
+        class="w-full rounded-lg shadow-md"
+        :src="video.thumbnail.maxres.url"
+        :alt="video.title"
+      >
+    </vue-final-modal>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, watch, onBeforeUnmount } from 'vue'
+import { 
+  defineComponent, 
+  computed, 
+  watch, 
+  inject,
+  ref,
+  onBeforeUnmount 
+} from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
+
+import type { VueFinalModalProperty } from 'vue-final-modal'
 
 import { ACTIONS_KEYS } from '@/store/actions'
 
@@ -103,6 +126,14 @@ export default defineComponent({
   setup () {
     const store = useStore()
     const route = useRoute()
+
+    const $vfm = inject<VueFinalModalProperty>('$vfm')
+
+    /**
+     * Youtube 廣告區塊是否開啟
+     */
+    const isAdShow = ref(false)
+
     const id = computed(() => route.params.id)
     const video = computed(() => store.state.currentVideo)
 
@@ -124,12 +155,28 @@ export default defineComponent({
       immediate: true
     })
 
+    let timeout: number | undefined
+    const onPaused = () => {
+      if(!$vfm) { return }
+      timeout = setTimeout(()=> isAdShow.value = true, 1000)
+    }
+
+    const onPlaying = () => {
+      if(!$vfm) { return }
+      if(typeof timeout === 'number') {
+        clearTimeout(timeout)
+      }
+    }
+    
     onBeforeUnmount(() => { unwatch() })
 
     return {
       id,
       video,
-      description
+      description,
+      onPaused,
+      onPlaying,
+      isAdShow
     }
   }
 })

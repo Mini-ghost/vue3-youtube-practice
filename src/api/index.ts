@@ -22,7 +22,7 @@ export const getVideos = async (pageToken?: string) => {
     channelTitle: snippet.channelTitle,
     title: snippet.title,
     description: snippet.description,
-    thumbnail: snippet.thumbnails.high.url
+    thumbnail: snippet.thumbnails
   }))
 
 
@@ -54,7 +54,7 @@ export const getVideoById = async (id: string) => {
     channelTitle: snippet.channelTitle,
     title: snippet.title,
     description: snippet.description,
-    thumbnail: snippet.thumbnails.high.url
+    thumbnail: snippet.thumbnails
   }))
 
   return data
