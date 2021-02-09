@@ -1,0 +1,1 @@
+.hover-effect[data-v-e3dd1d26]:before{content:"";position:absolute;top:0;right:0;bottom:0;left:0;background-color:hsla(0,0%,87.8%,.75);border-radius:.75rem;transform:scale(.8);transition:opacity .3s,transform .3s;opacity:0;z-index:-1}.hover-effect[data-v-e3dd1d26]:hover:before{opacity:1;transform:scale(1)}
