@@ -57,8 +57,6 @@ export const getVideoById = async (id: string) => {
     thumbnail: snippet.thumbnails
   }))
 
-  console.log(data)
-
   return data
 }
 
